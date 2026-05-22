@@ -190,7 +190,7 @@ jobs:
       osx_matrix: ${{ steps.set-matrix-osx.outputs.osx_matrix }}
       wasm_matrix: ${{ steps.set-matrix-wasm.outputs.wasm_matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout Extension CI tools
         with:
           path: 'extension-ci-tools'
@@ -254,7 +254,7 @@ jobs:
 
     steps:
       - name: Free disk space 1
-        uses: endersonmenezes/free-disk-space@v2.1.1
+        uses: endersonmenezes/free-disk-space@713d134e243b926eba4a5cce0cf608bfd1efb89a # v2.1.1
         continue-on-error: true
         if: inputs.run_disk_clean_step
         with:
@@ -295,7 +295,7 @@ jobs:
       - name: Verify Docker storage path
         run: docker info | grep "Docker Root Dir"
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout override repository
         if: ${{inputs.override_repository != ''}}
         with:
@@ -304,14 +304,14 @@ jobs:
           fetch-depth: 0
           submodules: 'recursive'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout current repository
         if: ${{inputs.override_repository == ''}}
         with:
           fetch-depth: 0
           submodules: 'recursive'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout Extension CI tools
         with:
           path: 'extension-ci-tools'
@@ -325,7 +325,7 @@ jobs:
 
       - name: Set DuckDB to ref of calling workflow
         if: ${{inputs.set_caller_as_duckdb}}
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           path: 'duckdb'
           fetch-tags: true
@@ -346,7 +346,7 @@ jobs:
         run: |
           DUCKDB_TAG=${{ inputs.duckdb_tag }} make set_duckdb_tag
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout Extension CI tools
         with:
           path: 'extension-ci-tools'
@@ -406,7 +406,7 @@ jobs:
           mkdir ccache_dir
 
       - name: Load Ccache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ./ccache_dir
           key: ccache-extension-distribution-${{ matrix.duckdb_arch }}-${{ inputs.duckdb_version }}-${{ steps.ccache_timestamp.outputs.timestamp }}
@@ -453,7 +453,7 @@ jobs:
 
       - name: Save Ccache
         if: ${{ inputs.save_cache }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ./ccache_dir
           key: ccache-extension-distribution-${{ matrix.duckdb_arch }}-${{ inputs.duckdb_version }}-${{ steps.ccache_timestamp.outputs.timestamp }}
@@ -473,7 +473,7 @@ jobs:
           eval "$(jq -r '.test_env_variables // {} | to_entries[] | "export \(.key)=\(.value | @sh)"' <<< '${{inputs.test_config}}')"
           make test_${{ inputs.build_type }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ !inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
@@ -481,7 +481,7 @@ jobs:
           path: |
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
@@ -534,7 +534,7 @@ jobs:
       DUCKDB_PLATFORM: ${{ matrix.duckdb_arch }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout override repository
         if: ${{inputs.override_repository != ''}}
         with:
@@ -543,7 +543,7 @@ jobs:
           fetch-depth: 0
           submodules: 'recursive'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout current repository
         if: ${{inputs.override_repository == ''}}
         with:
@@ -555,18 +555,18 @@ jobs:
           brew install ninja autoconf make libtool automake autoconf-archive
 
       - name: Setup Ccache
-        uses: hendrikmuhs/ccache-action@main
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
         continue-on-error: true
         with:
           key: ccache-extension-distribution-${{ matrix.duckdb_arch }}-${{ inputs.duckdb_version }}
           restore-keys: ccache-extension-distribution-${{ matrix.duckdb_arch }}-
           save: ${{ inputs.save_cache }}
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.11'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout Extension CI tools
         with:
           path: 'extension-ci-tools'
@@ -580,7 +580,7 @@ jobs:
 
       - name: Set DuckDB to ref of calling workflow
         if: ${{inputs.set_caller_as_duckdb}}
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           path: 'duckdb'
           fetch-tags: true
@@ -627,7 +627,7 @@ jobs:
 
       - name: 'Setup go'
         if: ${{ (inputs.enable_go || contains(format(';{0};', inputs.extra_toolchains), ';go;'))}}
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
         with:
           go-version: '1.23'
 
@@ -721,7 +721,7 @@ jobs:
           eval "$(jq -r '.test_env_variables // {} | to_entries[] | "export \(.key)=\(.value | @sh)"' <<< '${{inputs.test_config}}')"
           make test_${{ inputs.build_type }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ !inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
@@ -729,7 +729,7 @@ jobs:
           path: |
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
@@ -802,7 +802,7 @@ jobs:
           git config --global core.autocrlf false
           git config --global core.eol lf
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout override repository
         if: ${{inputs.override_repository != ''}}
         with:
@@ -811,30 +811,30 @@ jobs:
           fetch-depth: 0
           submodules: 'recursive'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout current repository
         if: ${{inputs.override_repository == ''}}
         with:
           fetch-depth: 0
           submodules: 'recursive'
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.11'
 
       - name: Setup Rust
         if: (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;'))
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
 
       - name: Setup Rust for Mingw
         if: (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) && matrix.duckdb_arch == 'windows_amd64_rtools' || matrix.duckdb_arch == 'windows_amd64_mingw'
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@29eef336d9b2848a0b548edc03f92a220660cdb8 # stable
         with:
           targets: x86_64-pc-windows-gnu
 
       - name: 'Setup go'
         if: ${{ (inputs.enable_go || contains(format(';{0};', inputs.extra_toolchains), ';go;'))}}
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
         with:
           go-version: '1.23'
 
@@ -852,14 +852,14 @@ jobs:
           choco install jq -y
 
       - name: Setup Ccache
-        uses: hendrikmuhs/ccache-action@main
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
         continue-on-error: true
         with:
           key: ccache-extension-distribution-${{ matrix.duckdb_arch }}-${{ inputs.duckdb_version }}
           restore-keys: ccache-extension-distribution-${{ matrix.duckdb_arch }}-
           save: ${{ inputs.save_cache }}
 
-      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r@a51a8012b0aab7c32ef9d19bf54da93f3254335e # v2
         if:  matrix.duckdb_arch == 'windows_amd64_rtools' || matrix.duckdb_arch == 'windows_amd64_mingw'
         with:
           r-version: 'devel'
@@ -873,7 +873,7 @@ jobs:
           cp C:/rtools42/x86_64-w64-mingw32.static.posix/bin/g++.exe C:/rtools42/x86_64-w64-mingw32.static.posix/bin/x86_64-w64-mingw32-g++.exe
           cp C:/rtools42/x86_64-w64-mingw32.static.posix/bin/gfortran.exe C:/rtools42/x86_64-w64-mingw32.static.posix/bin/x86_64-w64-mingw32-gfortran.exe
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout Extension CI tools
         with:
           path: 'extension-ci-tools'
@@ -889,7 +889,7 @@ jobs:
 
       - name: Set DuckDB to ref of calling workflow
         if: ${{inputs.set_caller_as_duckdb}}
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           path: 'duckdb'
           fetch-tags: true
@@ -923,7 +923,7 @@ jobs:
         shell: pwsh
 
       - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11.1
+        uses: lukka/run-vcpkg@abed23940f9d7bc267b0e1a21ee7b699a3794baa # v11.1
         with:
           vcpkgGitCommitId: ${{ inputs.vcpkg_commit }}
           vcpkgGitURL: ${{ inputs.vcpkg_url }}
@@ -1003,7 +1003,7 @@ jobs:
           eval "$(jq -r '.test_env_variables // {} | to_entries[] | "export \(.key)=\(.value | @sh)"' <<< '${{inputs.test_config}}')"
           make test_${{ inputs.build_type }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ !inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
@@ -1011,7 +1011,7 @@ jobs:
           path: |
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
@@ -1068,7 +1068,7 @@ jobs:
       WASM_EXTENSIONS: 1
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout override repository
         if: ${{inputs.override_repository != ''}}
         with:
@@ -1077,14 +1077,14 @@ jobs:
           fetch-depth: 0
           submodules: 'recursive'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout current repository
         if: ${{inputs.override_repository == ''}}
         with:
           fetch-depth: 0
           submodules: 'recursive'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout Extension CI tools
         with:
           path: 'extension-ci-tools'
@@ -1098,7 +1098,7 @@ jobs:
 
       - name: Set DuckDB to ref of calling workflow
         if: ${{inputs.set_caller_as_duckdb}}
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           path: 'duckdb'
           fetch-tags: true
@@ -1119,19 +1119,19 @@ jobs:
         run: |
           DUCKDB_TAG=${{ inputs.duckdb_tag }} make set_duckdb_tag
 
-      - uses: mymindstorm/setup-emsdk@v13
+      - uses: mymindstorm/setup-emsdk@d233ac12b0102f74ca199f5dad7a4e2c13a8a745 # v13
         with:
           version: 3.1.71
 
       - name: Setup Rust for cross compilation
         if: ${{ (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;'))}}
-        uses: dtolnay/rust-toolchain@1.86.0
+        uses: dtolnay/rust-toolchain@dd44c20b1206a46e25fba8503d5d7c9a33bd355a # 1.86.0
         with:
           targets: wasm32-unknown-emscripten
 
       - name: 'Setup go'
         if: ${{ (inputs.enable_go || contains(format(';{0};', inputs.extra_toolchains), ';go;'))}}
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
         with:
           go-version: '1.23'
 
@@ -1150,7 +1150,7 @@ jobs:
           echo "${{ github.workspace }}/local_vcpkg_installation" >> $GITHUB_PATH
 
       - name: Setup Ccache
-        uses: hendrikmuhs/ccache-action@main
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
         continue-on-error: true
         with:
           key: ccache-extension-distribution-${{ matrix.duckdb_arch }}-${{ inputs.duckdb_version }}
@@ -1197,7 +1197,7 @@ jobs:
         run: |
           EXTENSION_NAME=${{ inputs.extension_name }} EXTENSION_CANONICAL=${{ inputs.extension_canonical }} ENABLE_EXTENSION_AUTOINSTALL=1 ENABLE_EXTENSION_AUTOLOADING=1 make ${{ matrix.duckdb_arch }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ !inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
@@ -1205,7 +1205,7 @@ jobs:
           path: |
             build/${{ matrix.duckdb_arch }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension.wasm
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: ${{ inputs.upload_all_extensions}}
         with:
           if-no-files-found: error

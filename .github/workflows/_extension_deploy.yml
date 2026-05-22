@@ -76,7 +76,7 @@ jobs:
     outputs:
       deploy_matrix: ${{ steps.parse-matrices.outputs.deploy_matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         name: Checkout Extension CI tools
         with:
           path: 'extension-ci-tools'
@@ -99,7 +99,7 @@ jobs:
       matrix: ${{fromJson(needs.generate_matrix.outputs.deploy_matrix)}}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 0
           submodules: 'recursive'
@@ -112,7 +112,7 @@ jobs:
           cd duckdb
           git checkout ${{ inputs.duckdb_version }}
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}${{startsWith(matrix.duckdb, 'wasm') && '.wasm' || ''}}
           path: |
