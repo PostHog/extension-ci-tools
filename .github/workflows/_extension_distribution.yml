@@ -981,10 +981,10 @@ jobs:
               set "VCVARS_BAT=vcvarsarm64.bat"
             )
             if defined VCVARS_BAT (
-              if exist "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\!VCVARS_BAT!" (
-                call "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\!VCVARS_BAT!"
-              ) else (
+              if exist "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\!VCVARS_BAT!" (
                 call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\!VCVARS_BAT!"
+              ) else (
+                call "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\!VCVARS_BAT!"
               )
             )
             REM Rename link.exe to link-git.exe to avoid conflicts with git supplied linker.
@@ -1119,7 +1119,7 @@ jobs:
         run: |
           DUCKDB_TAG=${{ inputs.duckdb_tag }} make set_duckdb_tag
 
-      - uses: mymindstorm/setup-emsdk@d233ac12b0102f74ca199f5dad7a4e2c13a8a745 # v13
+      - uses: emscripten-core/setup-emsdk@d233ac12b0102f74ca199f5dad7a4e2c13a8a745 # v13
         with:
           version: 3.1.71
 
