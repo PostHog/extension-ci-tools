@@ -748,7 +748,8 @@ jobs:
 
   windows:
     name: Windows
-    runs-on: ${{ matrix.runner }}
+    # DuckDB v1.5's vendored fmt does not build with VS 18 on windows-latest.
+    runs-on: ${{ matrix.runner == 'windows-latest' && 'windows-2022' || matrix.runner }}
     needs:
       - generate_matrix
       - linux
